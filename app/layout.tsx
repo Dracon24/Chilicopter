@@ -20,7 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`font-sans antialiased bg-black text-white`}>
+      <body className={`font-sans antialiased bg-white text-neutral-900`}>
         <CartProvider>
           {children}
           <CartDrawer />

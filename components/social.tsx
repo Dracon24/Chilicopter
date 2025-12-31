@@ -12,10 +12,10 @@ const socialImages = [
 
 export default function Social() {
   return (
-    <section className="bg-black py-16 px-4">
+    <section className="bg-neutral-100 py-16 px-4">
       <div className="container mx-auto text-center">
         <h2 className="text-3xl md:text-4xl font-bold mb-6">
-          <span className="text-white">JOIN THE </span>
+          <span className="text-neutral-900">JOIN THE </span>
           <span className="text-orange-500">#HEATWAVE</span>
         </h2>
 
@@ -23,14 +23,14 @@ export default function Social() {
           <Link
             href="https://www.instagram.com/chili_copter/"
             target="_blank"
-            className="text-white hover:text-orange-500 transition-colors"
+            className="text-neutral-700 hover:text-orange-500 transition-colors"
           >
             <FaInstagram size={24} />
           </Link>
           <Link
             href="https://www.facebook.com/Chilicopter/"
             target="_blank"
-            className="text-white hover:text-orange-500 transition-colors"
+            className="text-neutral-700 hover:text-orange-500 transition-colors"
           >
             <FaFacebookF size={24} />
           </Link>
