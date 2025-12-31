@@ -37,7 +37,7 @@ const farmersMarkets = [
 
 export default function WhereToBuyPage() {
   return (
-    <main className="min-h-screen bg-black text-white">
+    <main className="min-h-screen bg-white text-neutral-900">
       <Header />
 
       {/* Hero Section */}
@@ -45,26 +45,28 @@ export default function WhereToBuyPage() {
         <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-orange-500 italic tracking-wide">
           WHERE TO BUY
         </h1>
-        <p className="mt-6 text-gray-400 text-lg max-w-xl">
+        <p className="mt-6 text-neutral-600 text-lg max-w-xl">
           Find Chilicopter hot sauce at our retail locations and farmers' markets in the Richmond area.
         </p>
       </section>
 
       {/* Retail Stores Section */}
-      <section className="px-4 md:px-8 lg:px-16 py-16">
+      <section className="px-4 md:px-8 lg:px-16 py-16 bg-neutral-50">
         <h2 className="text-4xl md:text-5xl font-bold mb-4">
           RETAIL <span className="text-orange-500">STORES</span>
         </h2>
-        <p className="text-gray-400 mb-12">Visit our partner retail locations to experience Chilicopter hot sauce.</p>
+        <p className="text-neutral-600 mb-12">
+          Visit our partner retail locations to experience Chilicopter hot sauce.
+        </p>
 
         <div className="grid md:grid-cols-3 gap-6">
           {retailStores.map((store, index) => (
-            <div key={index} className="bg-zinc-900 rounded-lg p-6">
+            <div key={index} className="bg-white rounded-lg p-6 shadow-sm border border-neutral-200">
               <div className="flex items-start gap-3 mb-2">
                 <MapPin className="w-5 h-5 text-orange-500 mt-1 flex-shrink-0" />
-                <h3 className="text-lg font-bold text-white">{store.name}</h3>
+                <h3 className="text-lg font-bold text-neutral-900">{store.name}</h3>
               </div>
-              <p className="text-gray-400 text-sm ml-8 mb-4">{store.address}</p>
+              <p className="text-neutral-600 text-sm ml-8 mb-4">{store.address}</p>
               <div className="flex gap-6 ml-8">
                 <Link
                   href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(store.address)}`}
@@ -85,21 +87,24 @@ export default function WhereToBuyPage() {
         <h2 className="text-4xl md:text-5xl font-bold mb-4">
           FARMERS' <span className="text-orange-500">MARKETS</span>
         </h2>
-        <p className="text-gray-400 mb-12">
+        <p className="text-neutral-600 mb-12">
           Meet us at local farmers' markets and discover Chilicopter hot sauce fresh from our booth.
         </p>
 
         <div className="flex flex-col gap-8">
           {farmersMarkets.map((market, index) => (
-            <div key={index} className="flex flex-col md:flex-row rounded-lg overflow-hidden">
+            <div
+              key={index}
+              className="flex flex-col md:flex-row rounded-lg overflow-hidden border border-neutral-200 shadow-sm"
+            >
               {/* Left side - info */}
-              <div className="bg-zinc-900 p-6 w-full md:w-1/2">
-                <h3 className="text-xl font-bold text-white mb-1">{market.name}</h3>
+              <div className="bg-neutral-50 p-6 w-full md:w-1/2">
+                <h3 className="text-xl font-bold text-neutral-900 mb-1">{market.name}</h3>
                 <p className="text-orange-500 text-sm mb-3">{market.location}</p>
-                <p className="text-gray-400 text-sm mb-3">{market.address}</p>
+                <p className="text-neutral-600 text-sm mb-3">{market.address}</p>
                 <div className="border-l-2 border-orange-500 pl-3 mb-4">
-                  <p className="text-gray-300 text-sm font-medium">Hours</p>
-                  <p className="text-gray-400 text-sm">{market.hours}</p>
+                  <p className="text-neutral-700 text-sm font-medium">Hours</p>
+                  <p className="text-neutral-600 text-sm">{market.hours}</p>
                 </div>
                 <div className="flex gap-6">
                   <Link
@@ -130,12 +135,12 @@ export default function WhereToBuyPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="bg-zinc-900 py-20 px-4 text-center">
-        <h2 className="text-3xl md:text-5xl font-bold tracking-wide mb-6">CAN'T FIND US NEARBY?</h2>
-        <p className="text-gray-400 mb-8">Order Chilicopter hot sauce online and have it delivered to your door.</p>
+      <section className="bg-orange-500 py-20 px-4 text-center">
+        <h2 className="text-3xl md:text-5xl font-bold tracking-wide mb-6 text-white">CAN'T FIND US NEARBY?</h2>
+        <p className="text-white/80 mb-8">Order Chilicopter hot sauce online and have it delivered to your door.</p>
         <Link
           href="/shop"
-          className="inline-block bg-orange-500 hover:bg-orange-600 text-black font-semibold px-10 py-4 transition-colors"
+          className="inline-block bg-white hover:bg-neutral-100 text-orange-500 font-semibold px-10 py-4 transition-colors"
         >
           SHOP ONLINE
         </Link>

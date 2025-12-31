@@ -14,7 +14,7 @@ export default function Hero() {
 
       {/* Content */}
       <div className="relative z-10 text-center px-4">
-        <p className="text-sm tracking-[0.3em] text-white/80 mb-4">EST. 2020 // SMALL BATCH</p>
+        <p className="text-sm tracking-[0.3em] text-white/80 mb-4">EST. 2026 // HEAT THAT HOVERS</p>
         <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-8 leading-tight">
           <span className="block">IGNITE</span>
           <span className="block text-orange-500">YOUR TASTE</span>
