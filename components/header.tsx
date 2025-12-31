@@ -1,14 +1,35 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Link from "next/link"
-import { ShoppingCart, ChevronDown } from "lucide-react"
+import { ShoppingCart, ChevronDown, User } from "lucide-react"
 import { FaFacebookF, FaInstagram } from "react-icons/fa"
 import { useCart } from "@/context/cart-context"
+import { createClient } from "@/lib/supabase/client"
+import type { User as SupabaseUser } from "@supabase/supabase-js"
 
 export default function Header() {
   const { openCart, itemCount } = useCart()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [user, setUser] = useState<SupabaseUser | null>(null)
+
+  useEffect(() => {
+    const supabase = createClient()
+
+    // Get initial user
+    supabase.auth.getUser().then(({ data }) => {
+      setUser(data.user)
+    })
+
+    // Listen for auth changes
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null)
+    })
+
+    return () => subscription.unsubscribe()
+  }, [])
 
   return (
     <header className="fixed top-0 left-0 right-0 z-40 bg-white/90 backdrop-blur-sm border-b border-neutral-200">
@@ -56,6 +77,13 @@ export default function Header() {
                 >
                   WHERE TO BUY
                 </Link>
+                <Link
+                  href={user ? "/account" : "/auth/login"}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="px-4 py-3 text-sm text-neutral-700 hover:bg-orange-50 hover:text-orange-500 transition-colors"
+                >
+                  {user ? "MY ACCOUNT" : "LOGIN"}
+                </Link>
                 <div className="border-t border-neutral-200 mt-2 pt-2 px-4 flex items-center gap-4">
                   <Link
                     href="https://www.facebook.com/Chilicopter/"
@@ -77,7 +105,7 @@ export default function Header() {
           )}
         </div>
 
-        {/* Desktop nav - unchanged */}
+        {/* Desktop nav */}
         <nav className="hidden md:flex items-center gap-8">
           <Link href="/" className="text-sm text-neutral-700 hover:text-orange-500 transition-colors">
             HOME
@@ -93,7 +121,7 @@ export default function Header() {
           </Link>
         </nav>
 
-        {/* Right side icons - unchanged */}
+        {/* Right side icons */}
         <div className="flex items-center gap-4">
           <div className="hidden md:flex items-center gap-3">
             <Link
@@ -111,6 +139,13 @@ export default function Header() {
               <FaInstagram size={14} />
             </Link>
           </div>
+          <Link
+            href={user ? "/account" : "/auth/login"}
+            className="text-neutral-700 hover:text-orange-500 transition-colors"
+            title={user ? "My Account" : "Login"}
+          >
+            <User size={20} />
+          </Link>
           <button onClick={openCart} className="text-neutral-700 hover:text-orange-500 transition-colors relative">
             <ShoppingCart size={20} />
             {itemCount > 0 && (

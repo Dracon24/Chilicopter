@@ -1,48 +1,24 @@
 "use client"
-
-import type React from "react"
-
-import { useState } from "react"
 import { useRouter } from "next/navigation"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
 import { useCart } from "@/context/cart-context"
 import Image from "next/image"
 import { ChevronLeft, Minus, Plus, Trash2 } from "lucide-react"
+import StripeCheckout from "@/components/stripe-checkout"
 
 export default function CheckoutPage() {
   const router = useRouter()
-  const { items, removeItem, updateQuantity, subtotal, clearCart } = useCart()
-  const [notes, setNotes] = useState("")
-
-  const [formData, setFormData] = useState({
-    email: "",
-    firstName: "",
-    lastName: "",
-    address: "",
-    apartment: "",
-    city: "",
-    state: "",
-    zipCode: "",
-    phone: "",
-  })
+  const { items, removeItem, updateQuantity, subtotal } = useCart()
 
   const shipping = 5.99
   const tax = subtotal * 0.07
   const total = subtotal + shipping + tax
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target
-    setFormData((prev) => ({ ...prev, [name]: value }))
-  }
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    // Here you would typically process the order
-    alert("Order placed successfully!")
-    clearCart()
-    router.push("/")
-  }
+  const stripeItems = items.map((item) => ({
+    id: item.id,
+    quantity: item.quantity,
+  }))
 
   if (items.length === 0) {
     return (
@@ -80,127 +56,9 @@ export default function CheckoutPage() {
         <h1 className="text-4xl md:text-5xl font-bold text-orange-500 mb-12">CHECKOUT</h1>
 
         <div className="grid lg:grid-cols-2 gap-12">
-          {/* Left Column - Form */}
+          {/* Left Column - Order Summary */}
           <div>
-            <form onSubmit={handleSubmit} className="space-y-8">
-              {/* Contact Information */}
-              <div>
-                <h2 className="text-xl font-semibold mb-4 text-neutral-900">Contact Information</h2>
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  placeholder="Email address"
-                  required
-                  className="w-full bg-neutral-50 border border-neutral-300 rounded-md p-3 text-neutral-900 focus:outline-none focus:border-orange-500"
-                />
-              </div>
-
-              {/* Shipping Address */}
-              <div>
-                <h2 className="text-xl font-semibold mb-4 text-neutral-900">Shipping Address</h2>
-                <div className="grid grid-cols-2 gap-4 mb-4">
-                  <input
-                    type="text"
-                    name="firstName"
-                    value={formData.firstName}
-                    onChange={handleInputChange}
-                    placeholder="First name"
-                    required
-                    className="w-full bg-neutral-50 border border-neutral-300 rounded-md p-3 text-neutral-900 focus:outline-none focus:border-orange-500"
-                  />
-                  <input
-                    type="text"
-                    name="lastName"
-                    value={formData.lastName}
-                    onChange={handleInputChange}
-                    placeholder="Last name"
-                    required
-                    className="w-full bg-neutral-50 border border-neutral-300 rounded-md p-3 text-neutral-900 focus:outline-none focus:border-orange-500"
-                  />
-                </div>
-                <input
-                  type="text"
-                  name="address"
-                  value={formData.address}
-                  onChange={handleInputChange}
-                  placeholder="Address"
-                  required
-                  className="w-full bg-neutral-50 border border-neutral-300 rounded-md p-3 text-neutral-900 focus:outline-none focus:border-orange-500 mb-4"
-                />
-                <input
-                  type="text"
-                  name="apartment"
-                  value={formData.apartment}
-                  onChange={handleInputChange}
-                  placeholder="Apartment, suite, etc. (optional)"
-                  className="w-full bg-neutral-50 border border-neutral-300 rounded-md p-3 text-neutral-900 focus:outline-none focus:border-orange-500 mb-4"
-                />
-                <div className="grid grid-cols-3 gap-4 mb-4">
-                  <input
-                    type="text"
-                    name="city"
-                    value={formData.city}
-                    onChange={handleInputChange}
-                    placeholder="City"
-                    required
-                    className="w-full bg-neutral-50 border border-neutral-300 rounded-md p-3 text-neutral-900 focus:outline-none focus:border-orange-500"
-                  />
-                  <input
-                    type="text"
-                    name="state"
-                    value={formData.state}
-                    onChange={handleInputChange}
-                    placeholder="State"
-                    required
-                    className="w-full bg-neutral-50 border border-neutral-300 rounded-md p-3 text-neutral-900 focus:outline-none focus:border-orange-500"
-                  />
-                  <input
-                    type="text"
-                    name="zipCode"
-                    value={formData.zipCode}
-                    onChange={handleInputChange}
-                    placeholder="ZIP code"
-                    required
-                    className="w-full bg-neutral-50 border border-neutral-300 rounded-md p-3 text-neutral-900 focus:outline-none focus:border-orange-500"
-                  />
-                </div>
-                <input
-                  type="tel"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleInputChange}
-                  placeholder="Phone number"
-                  required
-                  className="w-full bg-neutral-50 border border-neutral-300 rounded-md p-3 text-neutral-900 focus:outline-none focus:border-orange-500"
-                />
-              </div>
-
-              {/* Order Notes */}
-              <div>
-                <h2 className="text-xl font-semibold mb-4 text-neutral-900">Order Notes</h2>
-                <textarea
-                  value={notes}
-                  onChange={(e) => setNotes(e.target.value)}
-                  placeholder="Special instructions for your order (e.g., gift wrap, delivery notes)"
-                  className="w-full bg-neutral-50 border border-neutral-300 rounded-md p-3 text-neutral-900 focus:outline-none focus:border-orange-500 h-24 resize-none"
-                />
-              </div>
-
-              {/* Submit Button */}
-              <button
-                type="submit"
-                className="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-4 rounded-md transition-colors text-lg"
-              >
-                Place Order - ${total.toFixed(2)}
-              </button>
-            </form>
-          </div>
-
-          {/* Right Column - Order Summary */}
-          <div>
-            <div className="bg-neutral-50 border border-neutral-200 rounded-lg p-6">
+            <div className="bg-neutral-50 border border-neutral-200 rounded-lg p-6 mb-6">
               <h2 className="text-xl font-semibold mb-6 text-neutral-900">Order Summary</h2>
 
               {/* Cart Items */}
@@ -259,6 +117,12 @@ export default function CheckoutPage() {
                 </div>
               </div>
             </div>
+          </div>
+
+          {/* Right Column - Stripe Checkout */}
+          <div>
+            <h2 className="text-xl font-semibold mb-6 text-neutral-900">Payment</h2>
+            <StripeCheckout items={stripeItems} />
           </div>
         </div>
       </section>
